@@ -109,6 +109,16 @@ var User = mongoose.model('User', UserSchema);
 
 module.exports = {User}
 
+UserSchema.methods.removeToken  = function(token) {
+  var user = this;
+  user.update({
+    $pull:{
+      tokens:{
+        token:{token}
+    }
+  }
+});
+}
 
 
 // var newUser = new User({
