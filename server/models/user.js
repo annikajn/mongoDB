@@ -52,6 +52,16 @@ UserSchema.methods.generateAuthToken = function () {
   });
 };
 
+UserSchema.methods.removeToken = function (token) {
+  var user = this;
+
+  return user.update({
+    $pull: {
+      tokens: {token}
+    }
+  });
+};
+
 UserSchema.statics.findByToken = function (token) {
   var User = this;
   var decoded;
@@ -108,25 +118,3 @@ UserSchema.pre('save', function (next) {
 var User = mongoose.model('User', UserSchema);
 
 module.exports = {User}
-
-UserSchema.methods.removeToken  = function(token) {
-  var user = this;
-  user.update({
-    $pull:{
-      tokens:{
-        token:{token}
-    }
-  }
-});
-}
-
-
-// var newUser = new User({
-//     email:'annikajnicol@gmail.com'
-// })
-
-// newUser.save().then((doc) =>{
-//         console.log(JSON.stringify(doc, undefined,2));
-//     }, (e)=>{
-//         console.log('Unable to save Todo');
-//     });
